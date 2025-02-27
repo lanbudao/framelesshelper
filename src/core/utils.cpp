@@ -612,7 +612,11 @@ bool Utils::isWindowAccelerated(const QWindow *window)
     switch (window->surfaceType()) {
     case QSurface::RasterGLSurface:
 #if FRAMELESSHELPER_CONFIG(private_qt)
+#if (QT_VERSION_MAJOR >= 6)
+        return window->requestedFormat().hasAlpha();
+#else
         return qt_window_private(const_cast<QWindow *>(window))->compositing;
+#endif
 #else
         return true;
 #endif
